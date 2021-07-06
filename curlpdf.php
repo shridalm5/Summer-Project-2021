@@ -20,31 +20,15 @@ if(isset($_POST['submit']))
                 $allowed_types = array('jpg', 'png', 'jpeg', 'gif');
                 // Define maxsize for files i.e 2MB
                 $maxsize = 2 * 1024 * 1024*10;
-                $target_url="http://106.214.24.120:7777/adfs/upload.php";
+                $target_url="http://106.214.24.120:7777/adfs/uploadpdf.php";
                 //106.214.24.120:7777/adfs/
                 
-                    $datevar=$_POST['hidden3'];
-                    $timevar=$_POST['hidden4'];
-                    $pat=$_POST['path'];
+               
                     // echo "hello";
 
-                    // echo $datevar;
-                    // echo $timevar;
-                    $datearr= explode('%',$datevar);
+             
 
-                    $timarr=explode('%',$timevar);
-                    $path=explode('%',$pat);
-                    array_pop($path);
-                    array_pop($datearr);
-                    array_pop($timarr);
                     $count=0;
-
-
-                    $clsdscrptn=$_POST['dcmntcls'];
-                    $typdscrptn=$_POST['dcmnttyp'];
-                    $btchdscrptn=$_POST['btch'];
-                    $prcs=$_POST['prc'];
-
 
                 $filecount = count($_FILES['folder']['name']);
             
@@ -55,46 +39,31 @@ if(isset($_POST['submit']))
                 $tempFileName[] = $_FILES["folder"]['tmp_name'][$i];
                 } 
                 $postField = array();
-                $postFields['dcmntcls']=$clsdscrptn;
-                $postFields['dcmnttyp']=$typdscrptn;
-                $postFields['btch']=$btchdscrptn;
-                $postFields['prc']=$prcs;
-                $postFields['username']=$_SESSION['username'] ;
-
+                // $postFields['dcmntcls']=$clsdscrptn;
+                // $postFields['dcmnttyp']=$typdscrptn;
+                // $postFields['btch']=$btchdscrptn;
+                // $postFields['prc']=$prcs;
+                // $postFields['username']=$_SESSION['username'] ;
+         
                 foreach ($tempFileName as $index => $file) {
 
                     $file_tmpname = $_FILES['folder']['tmp_name'][$index];
                     $file_name = $_FILES['folder']['name'][$index];
                     $file_size = $_FILES['folder']['size'][$index];
                     $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
+
+
+                    if($file_ext!="pdf")
+                    {
+                        continue;
+
+                    }
                     $filepath = $upload_dir.$file_name;
-                    $start_time = microtime(true);
-                    $modified_file_name=$path[$index];
+                    // $start_time = microtime(true);
+                    // $modified_file_name=$path[$index];
                     // echo  $modified_file_name;
                     // echo "<br>";
-                    //$x = pathinfo($modified_file_name, PATHINFO_FILENAME);
-
-                    
-                    $strrr = $modified_file_name;//"atharv/abcd/abcd.php";
-                    $a = strripos($strrr, '.');
-                    $x = substr($strrr,0,$a);
-                    // echo $x;
-                    // echo "<br>";
-                
-                    // $str = $modified_file_name;//"atharv/abcd/abcd.php";
-                    // $a = strripos($str, '/');
-                    // $loc = substr($str,0,$a);
-                    // // $commandd='cd /var/www/html/'.$loc;
-
-                  
-
-                  exec('cd /var/www/html');
-                    $commandd='tesseract -l eng '.$modified_file_name.' '.$x.' pdf';
-                    exec($commandd);
-                  exec('cd /');
-                    
-                
-                    $outputocr = shell_exec("/var/www/html/first.py '".$modified_file_name."'");
+                    // $outputocr = shell_exec("/var/www/html/first.py '".$modified_file_name."'");
                     // echo $outputocr;
                     // echo "<br>";
                     $end_time = microtime(true);
@@ -106,11 +75,7 @@ if(isset($_POST['submit']))
             }
 
             $postFields["files_$index"] = $file;
-            $postFields["ocrdata_$index"]= $outputocr;
-            $postFields["cvdata_$index"]= "This system does not have YOLO";
-            $postFields["tmetkn_$index"]=$tmetkn = strval($end_time - $start_time);
-            $postFields["date_$index"]=$datearr[$count];
-            $postFields["time_$index"]=$timarr[$count];
+    
             $count=$count+1;
 
             }
@@ -134,24 +99,9 @@ if(isset($_POST['submit']))
                 $allowed_types = array('jpg', 'png', 'jpeg', 'gif');
                 // Define maxsize for files i.e 2MB
                 $maxsize = 2 * 1024 * 1024*10;
-                $target_url="http://106.214.24.120:7777/adfs/upload.php";
+                $target_url="http://106.214.24.120:7777/adfs/uploadpdf.php";
                 
-                    $datevar=$_POST['hidden1'];
-                    $timevar=$_POST['hidden2'];
-                    // $pat=$_POST['path'];
-                    $datearr= explode('%',$datevar);
-                    $timarr=explode('%',$timevar);
-                    // $path=explode('%',$pat);
-                    // print_r($path);
-                    // array_pop($path);
-                    array_pop($datearr);
-                    array_pop($timarr);
-                    $count=0;
-                    $clsdscrptn=$_POST['dcmntcls'];
-                    $typdscrptn=$_POST['dcmnttyp'];
-                    $btchdscrptn=$_POST['btch'];
-                    $prcs=$_POST['prc'];
-
+                $count=0;
 
                 $filecount = count($_FILES['files']['name']);
             
@@ -160,11 +110,7 @@ if(isset($_POST['submit']))
                 $tempFileName[] = $_FILES["files"]['tmp_name'][$i];
                 } 
                 $postField = array();
-                $postFields['dcmntcls']=$clsdscrptn;
-                $postFields['dcmnttyp']=$typdscrptn;
-                $postFields['btch']=$btchdscrptn;
-                $postFields['prc']=$prcs;
-                $postFields['username']=$_SESSION['username'] ;
+               
 
                 foreach ($tempFileName as $index => $file) {
 
@@ -174,19 +120,8 @@ if(isset($_POST['submit']))
                     $file_size = $_FILES['files']['size'][$index];
                     $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
                     $filepath = $upload_dir.$file_name;
-                    $start_time = microtime(true);
-                    // $modified_file_name=$path[$index];
-                    // exec('cd /path/to/new/dir');
-                    // exec('somecommand');
-                    // tesseract -l eng 123.png 123 pdf
+                   
 
-                    $x = pathinfo($file_name, PATHINFO_FILENAME);
-                      exec('cd /var/www/html');
-                    $commandd='tesseract -l eng '.$file_name.' '.$x.' pdf';
-                    exec($commandd);
-                    exec('cd /');
-                    $outputocr = shell_exec("/var/www/html/first.py '".$file_name."'");
-                    $end_time = microtime(true);
                     if (function_exists('curl_file_create')) { // For PHP 5.5+
                         $file = curl_file_create($file, "mime", $fileName[$index]);
                     }
@@ -195,11 +130,6 @@ if(isset($_POST['submit']))
             }
 
             $postFields["files_$index"] = $file;
-            $postFields["ocrdata_$index"]= $outputocr;
-            $postFields["cvdata_$index"]= "This system does not have YOLO";
-            $postFields["tmetkn_$index"]=$tmetkn = strval($end_time - $start_time);
-            $postFields["date_$index"]=$datearr[$count];
-            $postFields["time_$index"]=$timarr[$count];
             $count=$count+1;
 
             }

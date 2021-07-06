@@ -13,6 +13,8 @@
     
     // When form submitted, check and create user session.
     if (isset($_POST['username'])) {
+      // $url='http://106.214.24.120:7777/adfs/logincheck.php?username='.$_POST['username'].'&password='.$_POST['password'];
+      // echo $url;
 
                 $ch = curl_init('http://106.214.24.120:7777/adfs/logincheck.php?username='.$_POST['username'].'&password='.$_POST['password']);
         
@@ -28,7 +30,10 @@
         $doc->loadHTML($content); // That's the addition
         $thediv = $doc->getElementById('i');
         $flag=$thediv->textContent;
+
+        echo $flag;
       if ($flag == 1) {
+
           $_SESSION['username'] = $_POST['username'];
           // Redirect to user dashboard page
           header("Location: dashboard.php");
@@ -52,14 +57,6 @@
       <label>Password</label>
       <input type="submit" name="submit" value="Click here to Login">
     </div>
-
-      <a href="registration.php" >
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      Register now
-    </a>
 
 <?php
     }

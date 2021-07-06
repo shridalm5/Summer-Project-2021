@@ -11,7 +11,7 @@ include("auth_session.php");
 </head>
 <body>
 <div class="login-box">  
-  <h2>Hey, <?php echo $_SESSION['username']; ?>!</h2>
+ 
   <h3 style='color:white'>You are in user dashboard page</h3>
   <form action="process.php" method="post" enctype="multipart/form-data">
     <div class="user-box">
@@ -20,6 +20,7 @@ include("auth_session.php");
             <input type="file" name="files[]" multiple id="fileInput" >
             <input type="hidden" name="hidden1" id="hidden1" />
             <input type="hidden" name="hidden2" id="hidden2" />
+         
             <span style='color:white'>Select Folder to Upload:</span>  
            
             <input type="file" name="folder[]" id="files" multiple directory="" webkitdirectory="" moxdirectory="" /><br/><br/> 
@@ -62,6 +63,11 @@ include("auth_session.php");
    <div class="user-box">
       <input type="submit" name="submit" value="Click here to start processing" required="">
     </div>
+    <a href="uplaodpdfs.php">
+      <span></span>
+      <span></span>
+      Upload PDFs
+    </a>
   
     <a href="search.php">
       <span></span>
@@ -104,18 +110,14 @@ include("auth_session.php");
     }, false);
 </script>
 
-
-
-
-
 <script type="text/javascript">
-  const fileInput = document.querySelector('#fileInput');
+
+const fileInput = document.querySelector('#fileInput');
 fileInput.addEventListener('change', (event) => {
   // files is a FileList object (similar to NodeList)
   const files = event.target.files;
    var datevar="";
    var timevar="";
-
   for (let file of files) {
     const date = new Date(file.lastModified);
   
@@ -126,7 +128,6 @@ fileInput.addEventListener('change', (event) => {
   }
   document.getElementById("hidden1").value = datevar;
   document.getElementById("hidden2").value = timevar;
-
 });
 
 </script>
